@@ -1,0 +1,60 @@
+//Solution Added to the Problem Longest Palindromic Substring
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.size();
+        bool dp[n][n];
+        memset(dp,0,sizeof(dp));
+        int maxLength = 1;
+        int start = 0;
+        for(int i=0;i<n;i++)
+        {
+            dp[i][i]=true;
+        }
+        //for substrings of length equal to 2
+        for(int i=0;i<n-1;i++)
+        {
+            if(s[i]==s[i+1])
+            {
+                dp[i][i+1]=true;
+                start=i;
+                maxLength = 2;
+            }
+            else
+            {
+                dp[i][i+1]=false;
+            }
+        }
+        //for length of substrings of length greater than 3
+        //k is the length of the substring
+        //i is the start Index of the substring
+        //j is the ending index 
+        for(int k=3;k<=n;k++)
+        {
+            //fix the start Index
+            for(int i=0;i<n-k+1;i++)
+            {
+                //k=j-i+1
+                //j=i+k-1
+                int j = i+k-1;
+                if(s[i]==s[j] && dp[i+1][j-1]==true)
+                {
+                    dp[i][j]=true;
+                    if(k > maxLength)
+                    {
+                        maxLength = k;
+                        start = i;
+                    }
+                }
+            }
+        }
+        string lps = "";
+        for(int i=start;i<=start+maxLength-1;i++)
+        {
+            lps+=s[i];
+        }
+        
+        return lps;
+    }
+};
